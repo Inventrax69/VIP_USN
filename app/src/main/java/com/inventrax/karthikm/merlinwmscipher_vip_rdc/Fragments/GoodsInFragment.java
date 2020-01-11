@@ -428,7 +428,7 @@ public class GoodsInFragment extends Fragment implements View.OnClickListener, B
 
     //Assigning scanned value to the respective fields
     public void ProcessScannedinfo(String scannedData) {
-        if (!ProgressDialogUtils.isProgressActive()) {
+       // if (!ProgressDialogUtils.isProgressActive()) {
             if (scannedData != null && !Common.isPopupActive()) {
 
                 // Update Pallet Here
@@ -482,13 +482,13 @@ public class GoodsInFragment extends Fragment implements View.OnClickListener, B
                 //toneGenerator.startTone(ToneGenerator.TONE_CDMA_ABBR_ALERT);
                 //sound.alertError(getActivity(),getContext());
             }
-        }else {
+        /*}else {
             if (!common.isPopupActive()) {
                 common.showUserDefinedAlertType(errorMessages.EMC_0058, getActivity(), getContext(), "Error");
 
             }
 
-        }
+        }*/
     }
 
     public void ValidateLocationCode() {
