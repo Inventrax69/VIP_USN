@@ -55,7 +55,7 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
     private String division, menuLink;
     SharedPreferences sp;
 
-    String TenantType="";
+    String TenantType = "";
     NavDrawerAdapter expandableListAdapter;
     ExpandableListView expandableListView;
     List<MenuModel> headerList = new ArrayList<>();
@@ -92,7 +92,7 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
             sp = getContext().getSharedPreferences("LoginActivity", Context.MODE_PRIVATE);
             userName = sp.getString("UserName", "");   // Getting User name and division from Login
             division = sp.getString("division", "");
-            TenantType=sp.getString("TenantType","");
+            TenantType = sp.getString("TenantType", "");
             mIntentFilter = new IntentFilter();
             mIntentFilter.addAction("com.example.broadcast.counter");
 
@@ -208,6 +208,9 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
         childModel = new MenuModel("RSN Print Req.", false, false, "RSN Print Req.");
         childModelsList.add(childModel);
 
+        childModel = new MenuModel("Pallet Info", false, false, "Pallet Info");
+        childModelsList.add(childModel);
+
 
         if (menuModel.hasChildren) {
             childList.put(menuModel, childModelsList);
@@ -278,14 +281,14 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
                 FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new UnloadingFragment());
                 break;
 
-            case "Putaway":{
-                if(TenantType.equals("Branch")){
+            case "Putaway": {
+                if (TenantType.equals("Branch")) {
                     FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new PutAwayFrontFragment());
-                }else{
+                } else {
                     FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new PutAwayHeaderFragment());
                 }
             }
-                break;
+            break;
 
             case "OBD Picking":
                 FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new OutboundFragment());
@@ -323,10 +326,9 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
                 FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new DeNestingReceiveFragment());
                 break;
 
-             case "Nesting / Denesting":
+            case "Nesting / Denesting":
                 FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new DeNestingFragment());
                 break;
-
 
 
             case "MRP Change":
@@ -345,8 +347,9 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
                 FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new RSNPrintRequestFragment());
                 break;
 
-
-
+            case "Pallet Info":
+                FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new PalletInfoFragment());
+                break;
 
         }
     }

@@ -77,7 +77,8 @@ public class GoodsInFragment extends Fragment implements View.OnClickListener, B
     private static final String classCode = "API_FRAG_GoodsInFragment_";
 
     private View rootView;
-    private TextView lblVehicleNo, tvPalletQty, lblStoreRefNo, lblInboundQty, lblScannedSku, lblDesc, lblPalletQty, tvScanPallet;
+    private TextView lblVehicleNo, tvPalletQty, lblStoreRefNo, lblInboundQty, lblScannedSku, lblDesc,
+            lblPalletQty, lblInboundType;
     private CardView cvScanDock, cvScanPallet, cvScanSku;
     private ImageView ivScanDock, ivScanPallet, ivScanSku;
     private TextInputLayout txtInputLayoutDock, txtInputLayoutPallet, txtInputLayoutSerial, txtInputLayoutMfgDate, txtInputLayoutQty, txtInputLayoutMRP;
@@ -149,6 +150,7 @@ public class GoodsInFragment extends Fragment implements View.OnClickListener, B
         lblInboundQty = (TextView) rootView.findViewById(R.id.lblInboundQty);
         lblScannedSku = (TextView) rootView.findViewById(R.id.lblScannedSku);
         lblDesc = (TextView) rootView.findViewById(R.id.lblScannedSkuItem);
+        lblInboundType = (TextView) rootView.findViewById(R.id.lblInboundType);
 
         cvScanDock = (CardView) rootView.findViewById(R.id.cvScanDock);
         cvScanPallet = (CardView) rootView.findViewById(R.id.cvScanPallet);
@@ -206,36 +208,6 @@ public class GoodsInFragment extends Fragment implements View.OnClickListener, B
             }
         });
 
-       /* btnUpdate.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                btnUpdate.setBackgroundResource(R.drawable.button_shape_red);
-                btnUpdate.setText("Remove");
-
-                DialogUtils.showConfirmDialog(getActivity(), "Confirm Remove", "Do you want to remove?", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        switch (which) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                //Toast.makeText(getActivity(),"Pressed ok..!",Toast.LENGTH_LONG).show();
-                                btnUpdate.setBackgroundResource(R.drawable.button_shape);
-                                btnUpdate.setText("Update");
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //Toast.makeText(getActivity(),"Pressed cancel..!",Toast.LENGTH_LONG).show();
-                                btnUpdate.setBackgroundResource(R.drawable.button_shape);
-                                btnUpdate.setText("Update");
-                                break;
-                        }
-                    }
-                });
-                return true;
-            }
-        });*/
 
         lblVehicleNo.setText(getArguments().getString("Vehicleno"));
         lblStoreRefNo.setText(getArguments().getString("Storefno"));
@@ -274,6 +246,7 @@ public class GoodsInFragment extends Fragment implements View.OnClickListener, B
                 }
 
             }
+
         }
 
         // For Cipher Barcode reader
@@ -1024,6 +997,12 @@ public class GoodsInFragment extends Fragment implements View.OnClickListener, B
                                         etMfgDate.setEnabled(false);
                                         etSerial.setEnabled(false);
                                         etQty.setEnabled(false);
+
+                                        if(inventorydto.isAutoASN()){
+                                            lblInboundType.setBackgroundResource(R.color.green);
+                                        }else {
+                                            lblInboundType.setBackgroundResource(R.color.red);
+                                        }
 
                                         if (IsAssorted) {
                                             // added on 20/09/2018 by prasanna

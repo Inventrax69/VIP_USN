@@ -146,11 +146,17 @@ public class InventoryDTO {
     @SerializedName("CartonSerialNumber")
     private String CartonSerialNumber;
 
+    @SerializedName("ProductSerialNumber")
+    private String ProductSerialNumber;
+
     @SerializedName("IsOutward")
     private int IsOutward;
 
     @SerializedName("IsInward")
     private int IsInward;
+
+    @SerializedName("IsAutoASN")
+    private boolean IsAutoASN;
 
 
 
@@ -310,6 +316,13 @@ public class InventoryDTO {
                         this.setRawMaterial(Boolean.parseBoolean(entry.getValue().toString()));
                     }
                     break;
+                 case "IsAutoASN":
+                    if (entry.getValue() != null) {
+                        this.setAutoASN(Boolean.parseBoolean(entry.getValue().toString()));
+                    }
+                    break;
+
+
                 case "IsFinishedGoods":
                     if (entry.getValue() != null) {
                         this.setFinishedGoods(Boolean.parseBoolean(entry.getValue().toString()));
@@ -428,6 +441,14 @@ public class InventoryDTO {
                         this.setStoreRefNo(entry.getValue().toString());
                     }
                     break;
+
+                case "ProductSerialNumber":
+                    if (entry.getValue() != null) {
+                        this.setProductSerialNumber(entry.getValue().toString());
+                    }
+                    break;
+
+
 
                 case "IsOutWard":
                     if (entry.getValue() != null) {
@@ -909,5 +930,21 @@ public class InventoryDTO {
 
     public void setIsInward(int isInward) {
         IsInward = isInward;
+    }
+
+    public String getProductSerialNumber() {
+        return ProductSerialNumber;
+    }
+
+    public void setProductSerialNumber(String productSerialNumber) {
+        ProductSerialNumber = productSerialNumber;
+    }
+
+    public boolean isAutoASN() {
+        return IsAutoASN;
+    }
+
+    public void setAutoASN(boolean autoASN) {
+        IsAutoASN = autoASN;
     }
 }

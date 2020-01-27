@@ -78,7 +78,9 @@ public class GoodsInWOPalletFragment extends Fragment implements View.OnClickLis
 
     private static final String classCode = "API_FRAG_GoodsInWOPalletFragment_";
     private View rootView;
-    private TextView lblVehicleNo, tvPalletQty, lblStoreRefNo, lblInboundQty, lblScannedSku, lblDesc, lblPalletQty,tvScanPallet;
+
+    private TextView lblVehicleNo, tvPalletQty, lblStoreRefNo, lblInboundQty, lblScannedSku, lblDesc,
+            lblPalletQty,lblInboundType;
     private CardView cvScanDock, cvScanPallet, cvScanSku;
     private ImageView ivScanDock, ivScanPallet, ivScanSku;
     private TextInputLayout txtInputLayoutDock, txtInputLayoutPallet, txtInputLayoutSerial, txtInputLayoutMfgDate, txtInputLayoutQty, txtInputLayoutMRP;
@@ -86,6 +88,7 @@ public class GoodsInWOPalletFragment extends Fragment implements View.OnClickLis
     private SearchableSpinner spinnerSelectColor, spinnerSelectSloc;
     private Button btnUpdate, btnReceiveComplete, btnClose;
     private String MRP = null, MOP = null, Qty = null, MfgDate = null;
+
     DialogUtils dialogUtils;
     FragmentUtils fragmentUtils;
     private Common common = null;
@@ -95,16 +98,20 @@ public class GoodsInWOPalletFragment extends Fragment implements View.OnClickLis
     private ScanValidator scanValidator;
     private Gson gson;
     private WMSCoreMessage core;
+
     private String Materialcode = null, VehicleReceivedQty = null, VehicleInventoryQty = null;
     String userId = null;
+
     private static BarcodeReader barcodeReader;
     private AidcManager manager;
+
     String storageloc = null, color = null, DefaultSLoc = null, wareHouseID = "", tenantID = "";
     List<List<ColorDTO>> lstColorData;
     ArrayList<String> sloc;
     ArrayList<String> lstcolor;
     SoundUtils soundUtils = null;
     private ExceptionLoggerUtils exceptionLoggerUtils;
+
     boolean IsuserConfirmed = false, IsuserConfirmedRedo = false, IsAssorted = false;
     private String POHeaderID = "", accountID = "";
     ToneGenerator toneGenerator;
@@ -132,12 +139,15 @@ public class GoodsInWOPalletFragment extends Fragment implements View.OnClickLis
     // Form controls
     private void loadFormControls() {
         exceptionLoggerUtils = new ExceptionLoggerUtils();
+
         lblVehicleNo = (TextView) rootView.findViewById(R.id.lblVehicleNo);
         lblPalletQty = (TextView) rootView.findViewById(R.id.lblPalletQty);
         lblStoreRefNo = (TextView) rootView.findViewById(R.id.lblStoreRefNo);
         lblInboundQty = (TextView) rootView.findViewById(R.id.lblInboundQty);
         lblScannedSku = (TextView) rootView.findViewById(R.id.lblScannedSku);
         lblDesc = (TextView) rootView.findViewById(R.id.lblScannedSkuItem);
+        lblInboundType = (TextView) rootView.findViewById(R.id.lblInboundType);
+
         IsuserConfirmed = false;
         IsuserConfirmedRedo = false;
         cvScanDock = (CardView) rootView.findViewById(R.id.cvScanDock);
@@ -265,6 +275,8 @@ public class GoodsInWOPalletFragment extends Fragment implements View.OnClickLis
                 }
 
             }
+
+
         }
         // For Cipher Barcode reader
         Intent RTintent = new Intent("sw.reader.decode.require");
@@ -721,6 +733,12 @@ public class GoodsInWOPalletFragment extends Fragment implements View.OnClickLis
                                         etMfgDate.setEnabled(false);
                                         etSerial.setEnabled(false);
                                         etQty.setEnabled(false);
+
+                                        if(inventorydto.isAutoASN()){
+                                            lblInboundType.setBackgroundResource(R.color.green);
+                                        }else {
+                                            lblInboundType.setBackgroundResource(R.color.red);
+                                        }
 
                                         if (IsAssorted) {
                                             // added on 20/09/2018 by prasanna

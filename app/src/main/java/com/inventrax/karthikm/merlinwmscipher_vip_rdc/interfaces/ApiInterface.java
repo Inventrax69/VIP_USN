@@ -129,5 +129,8 @@ public interface ApiInterface {
     Call <String> GetSortList(@Body WMSCoreMessage oRequest);
     @POST("Outbound/GetConsPLAndTTSList")
     Call <String> GetConsPLAndTTSList(@Body WMSCoreMessage oRequest);
+    @POST("HouseKeeping/GetCartonSerialNumberInfo")
+    Call <String> GetCartonSerialNumberInfo(@Body WMSCoreMessage oRequest);
+
 
 }
