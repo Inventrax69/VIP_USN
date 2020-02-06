@@ -208,7 +208,7 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
         childModel = new MenuModel("RSN Print Req.", false, false, "RSN Print Req.");
         childModelsList.add(childModel);
 
-        childModel = new MenuModel("Pallet Info", false, false, "Pallet Info");
+        childModel = new MenuModel("Carton Info", false, false, "Pallet Info");
         childModelsList.add(childModel);
 
 
