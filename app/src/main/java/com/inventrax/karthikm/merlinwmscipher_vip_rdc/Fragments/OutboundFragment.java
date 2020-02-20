@@ -78,7 +78,7 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
     ImageView ivScanLocation, ivScanPallet, ivScanSku, ivScanNewRSN;
     Button btnGo, btnCloseOne, btnMaterialSkip, btnItemNotFound, btnCloseTwo, btnOk, btnCloseThree;
     RelativeLayout rlPickListOne, rlPickListTwo, rlSelect;
-    TextView lblPickListNo, lblDockNo,lblCustomerName, lblLocationSuggested,lblMRP, lblScannedSku, lblSKUSuggested, lblRequiredQty,
+    TextView lblPickListNo, lblDockNo, lblCustomerName, lblLocationSuggested, lblMRP, lblScannedSku, lblSKUSuggested, lblRequiredQty,
             lblPickedQty, lblScanNewRSN, lblDesc;
     CardView cvScanLocation, cvScanPallet, cvScanSku, cvScanNewRSN;
     SearchableSpinner spinnerSelectPickList, spinnerSelectReason;
@@ -95,7 +95,7 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
     private WMSCoreMessage core;
     private String SuggestedId = null;
     boolean IsuserConfirmed = false, IsUsercanceled = false;
-    private String pickRefNo, skipReason = null, skipReasonId = null, tripSheet = "",selectedPickRefNo = "";
+    private String pickRefNo, skipReason = null, skipReasonId = null, tripSheet = "", selectedPickRefNo = "";
     int count = 0;
     private ScanValidator scanValidator;
     private ExceptionLoggerUtils exceptionLoggerUtils;
@@ -314,36 +314,16 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
                 FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new HomeFragment());
                 break;
             case R.id.btnMaterialSkip:
-                /*btnMaterialSkip.setEnabled(false);
-                GetSkipReason();
-                DialogUtils.showConfirmDialog(getActivity(), "Confirm",
-                        "Are you sure you want to skip the suggested item?", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                if(!lblSKUSuggested.getText().toString().isEmpty()) {
 
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE:
-                                        SkipSuggestedItem();
-                                        common.setIsPopupActive(false);
-                                        break;
-
-                                    case DialogInterface.BUTTON_NEGATIVE:
-                                        btnMaterialSkip.setEnabled(true);
-                                        common.setIsPopupActive(false);
-                                        break;
-                                }
-
-                            }
-                        });
-                common.setIsPopupActive(true);
-                ProgressDialogUtils.closeProgressDialog();*/
-
-
-                rlPickListOne.setVisibility(GONE);
-                rlPickListTwo.setVisibility(GONE);
-                rlSelect.setVisibility(View.VISIBLE);
-                GetSkipReason();
+                    rlPickListOne.setVisibility(GONE);
+                    rlPickListTwo.setVisibility(GONE);
+                    rlSelect.setVisibility(View.VISIBLE);
+                    GetSkipReason();
+                }else {
+                    common.showUserDefinedAlertType("There are no suggestion to skip",getActivity(),getActivity(),"Warning");
+                }
                 break;
             case R.id.btnItemNotFound:
                 btnItemNotFound.setEnabled(false);
@@ -375,18 +355,18 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
 
 
     @Override
-        public void onBarcodeEvent(final BarcodeReadEvent barcodeReadEvent) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
+    public void onBarcodeEvent(final BarcodeReadEvent barcodeReadEvent) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
-                    // update UI to reflect the data
-                    getScanner = barcodeReadEvent.getBarcodeData();
-                    ProcessScannedinfo(getScanner);
+                // update UI to reflect the data
+                getScanner = barcodeReadEvent.getBarcodeData();
+                ProcessScannedinfo(getScanner);
 
-                }
+            }
 
-            });
+        });
     }
 
     @Override
@@ -499,37 +479,32 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
                 } else {
                     common.showUserDefinedAlertType(errorMessages.EMC_0007, getActivity(), getContext(), "Error");
 
-                    return;
                 }
 
 
-            } else if (scanValidator.IsLocationScanned(scannedData)) {
+            } else if (ScanValidator.IsLocationScanned(scannedData)) {
 
-                if (IsStrictlycomplaince && lblLocationSuggested.getText() != "") {
-                    if (lblLocationSuggested.getText().equals(scannedData)) {
-                        etLocation.setText(scannedData);
-                        ValidateLocationCode();
-                    } else {
-                        common.showUserDefinedAlertType(errorMessages.EMC_0013, getActivity(), getContext(), "Error");
-                        return;
-                    }
-                } else {
+
+                if (lblLocationSuggested.getText().toString().equalsIgnoreCase(scannedData)) {
                     etLocation.setText(scannedData);
                     ValidateLocationCode();
+                } else {
+                    common.showUserDefinedAlertType(errorMessages.EMC_0013, getActivity(), getContext(), "Error");
+
                 }
+
             }
         }
     }
-
 
 
     public void getTripSheetNumber() {
 
         for (String TSnumber : lstTripSheetNo) {
 
-            String pickListNo =  TSnumber.split("[-]", 2)[0].trim();
+            String pickListNo = TSnumber.split("[-]", 2)[0].trim();
 
-            if(pickRefNo.trim().equalsIgnoreCase(pickListNo)){
+            if (pickRefNo.trim().equalsIgnoreCase(pickListNo)) {
                 tripSheet = TSnumber.split("[-]", 2)[1].trim();
 
             }
@@ -802,9 +777,9 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
 
                                                 selectedPickRefNo = oOutboundDTO.getSelectedPickRefNumber();
 
-                                                if(pickRefNo.startsWith("TS")){
+                                                if (pickRefNo.startsWith("TS")) {
                                                     lblPickListNo.setText(pickRefNo);
-                                                }else {
+                                                } else {
                                                     lblPickListNo.setText(pickRefNo + "-" + oOutboundDTO.getCustomerCode());
                                                 }
                                                 lblDesc.setText(oOutboundDTO.getMaterialDescription());
@@ -829,14 +804,14 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
                                 }
                             }
                             ProgressDialogUtils.closeProgressDialog();
-                            if(pickRefNo.startsWith("PL")) {
+                            if (pickRefNo.startsWith("PL")) {
                                 common.showUserDefinedAlertType("There are no materials in this pick list", getActivity(), getContext(), "Warning");
                                 ClearFields();
-                            }else {
+                            } else {
                                 common.showUserDefinedAlertType("There are no materials in this trip sheet", getActivity(), getContext(), "Warning");
                                 ClearFields();
                             }
-                            } catch (Exception ex) {
+                        } catch (Exception ex) {
                             try {
                                 ExceptionLoggerUtils.createExceptionLog(ex.toString(), classCode, "003_02", getActivity());
                                 logException();
@@ -1277,9 +1252,9 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
             message = common.SetAuthentication(EndpointConstants.Inventory, getContext());
             InventoryDTO inventoryDTO = new InventoryDTO();
 
-            if(pickRefNo.startsWith("PL")) {
+            if (pickRefNo.startsWith("PL")) {
                 inventoryDTO.setReferenceDocumentNumber(pickRefNo);  // pick list no.
-            }else {
+            } else {
                 inventoryDTO.setReferenceDocumentNumber(selectedPickRefNo);   // pick list no. under a trip sheet
             }
 
@@ -1291,25 +1266,25 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
             inventoryDTO.setSuggestionID(SuggestedId);
 
             if (IsuserConfirmed) {
-                if (etQty.getText().toString().isEmpty()) {
+                /*if (etQty.getText().toString().isEmpty()) {
                     common.showUserDefinedAlertType(errorMessages.EMC_0037, getActivity(), getContext(), "Error");
                     lblScanNewRSN.setText("Scan New RSN");
                     return;
-                }
+                }*/
 
-                if (etQty.getText().toString().equals("0")) {
+               /* if (etQty.getText().toString().equals("0")) {
 
                     common.showUserDefinedAlertType(errorMessages.EMC_0038, getActivity(), getContext(), "Error");
 
 
                     lblScanNewRSN.setText("Scan New RSN");
                     return;
-                }
-                int Qty = Integer.parseInt(etQty.getText().toString());
+                }*/
+                int Qty = 1;
                 int requiredqty = Integer.parseInt(lblRequiredQty.getText().toString().split("[.]", 2)[0]);
                 if (Qty <= requiredqty) {
                     inventoryDTO.setNewRSN(NewMcode);
-                    inventoryDTO.setQuantity(etQty.getText().toString());
+                    inventoryDTO.setQuantity("1");
                     inventoryDTO.setUserConfirmedExcessTransaction(true);
                 } else {
 
@@ -1372,16 +1347,7 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
                                         ivScanSku.setImageResource(R.drawable.warning_img);
 
                                         common.showAlertType(owmsExceptionMessage, getActivity(), getContext());
-                                        etQty.setVisibility(View.GONE);
-                                        lblScanNewRSN.setVisibility(View.GONE);
-                                        cvScanNewRSN.setVisibility(View.GONE);
-                                        if (owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_BL_020")) {
-                                            lblScanNewRSN.setText("Scan New RSN");
-                                        }
-                                        if (owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC02") || owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC03")
-                                                || owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC01") || owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC04")) {
-                                            Clearfields();
-                                        }
+
 
                                         if (owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_BL_017")) {
                                             IsuserConfirmed = true;
@@ -1398,7 +1364,7 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
                                                             switch (which) {
                                                                 case DialogInterface.BUTTON_POSITIVE:
                                                                     common.setIsPopupActive(false);
-                                                                    etQty.setVisibility(View.VISIBLE);
+                                                                    //etQty.setVisibility(View.VISIBLE);
                                                                     lblScanNewRSN.setVisibility(View.VISIBLE);
                                                                     cvScanNewRSN.setVisibility(View.VISIBLE);
                                                                     break;
@@ -1419,9 +1385,31 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
                                             return;
                                         }
 
+
+                                        if (!IsuserConfirmed) {
+                                            etQty.setVisibility(View.GONE);
+                                            lblScanNewRSN.setVisibility(View.GONE);
+                                            cvScanNewRSN.setVisibility(View.GONE);
+                                            if (owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_BL_020")) {
+                                                lblScanNewRSN.setText("Scan New RSN");
+                                            }
+                                            if (owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC02") || owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC03")
+                                                    || owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC01") || owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC04")) {
+                                                Clearfields();
+                                            }
+
+                                            etSerial.setText("");
+                                            lblScannedSku.setText("");
+
+                                        } else {
+                                            lblScanNewRSN.setText("");
+                                            cvScanNewRSN.setCardBackgroundColor(getResources().getColor(R.color.white));
+                                            ivScanNewRSN.setImageResource(R.drawable.warning_img);
+                                        }
+
+
                                     }
-                                    etSerial.setText("");
-                                    lblScannedSku.setText("");
+
 
                                 } else {
 
@@ -1436,18 +1424,44 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
                                             lstDto.add(dto);
 
                                         }
+
                                         ProgressDialogUtils.closeProgressDialog();
-                                        cvScanSku.setCardBackgroundColor(getResources().getColor(R.color.white));
-                                        ivScanSku.setImageResource(R.drawable.check);
 
-                                        etQty.setText("");
-                                        etQty.setVisibility(GONE);
-                                        cvScanNewRSN.setVisibility(GONE);
-                                        lblScanNewRSN.setText("Scan New RSN");
-                                        lblScanNewRSN.setVisibility(GONE);
-                                        common.setIsPopupActive(false);
+                                        boolean isNewSuggRequired = false;
+                                        if (IsuserConfirmed) {
+                                            cvScanNewRSN.setCardBackgroundColor(getResources().getColor(R.color.white));
+                                            ivScanNewRSN.setImageResource(R.drawable.check);
 
-                                        GetPickItem();
+                                            int pendingPickedQty = Integer.parseInt(dto.getPendigPickQty());
+                                            int reqQty = (int) Double.parseDouble(lblRequiredQty.getText().toString());
+
+                                            lblPickedQty.setText("" + (reqQty - pendingPickedQty));
+                                            common.setIsPopupActive(false);
+                                            if (pendingPickedQty == 0)
+                                                isNewSuggRequired = true;
+
+                                        } else {
+
+                                            isNewSuggRequired = true;
+                                        }
+
+                                        if (isNewSuggRequired) {
+                                            ProgressDialogUtils.closeProgressDialog();
+                                            cvScanSku.setCardBackgroundColor(getResources().getColor(R.color.white));
+                                            ivScanSku.setImageResource(R.drawable.check);
+
+
+                                            etQty.setText("");
+                                            etQty.setVisibility(GONE);
+                                            cvScanNewRSN.setVisibility(GONE);
+                                            lblScanNewRSN.setText("Scan New RSN");
+                                            lblScanNewRSN.setVisibility(GONE);
+                                            common.setIsPopupActive(false);
+
+                                            GetPickItem();
+                                        }
+
+
                                     }
 
                                 }
@@ -1494,8 +1508,7 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
         }
     }
 
-    public void MarkMaterialNotFound()
-    {
+    public void MarkMaterialNotFound() {
 
         try {
             WMSCoreMessage message = new WMSCoreMessage();
@@ -1691,9 +1704,9 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
             OutbountDTO oOutboundDTO = new OutbountDTO();
             SkipReasonDTO oSkipReason = new SkipReasonDTO();
 
-            if(pickRefNo.startsWith("PL")) {
+            if (pickRefNo.startsWith("PL")) {
                 oOutboundDTO.setSelectedPickRefNumber(pickRefNo); // pick list no
-            }else {
+            } else {
                 oOutboundDTO.setSelectedPickRefNumber(selectedPickRefNo);   // pick list no. under a trip sheet
             }
 
@@ -1760,6 +1773,7 @@ public class OutboundFragment extends Fragment implements View.OnClickListener, 
                                                 || owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC01") || owmsExceptionMessage.getWMSExceptionCode().equals("EMC_OB_DAL_PICKSugg_EC04")) {
                                             ProgressDialogUtils.closeProgressDialog();
                                             Clearfields();
+                                            SuggestedId = "";
                                         }
                                         rlPickListOne.setVisibility(GONE);
                                         rlPickListTwo.setVisibility(View.VISIBLE);

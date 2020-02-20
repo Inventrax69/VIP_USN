@@ -839,6 +839,8 @@ public class DeNestingIssueFragment extends Fragment implements BarcodeReader.Tr
                 inventoryDTO.setUserConfirmReDo(true);
 
             }
+            inventoryDTO.setIsItemScannedForIssue(1);
+
             message.setEntityObject(inventoryDTO);
 
             Call<String> call = null;

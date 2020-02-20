@@ -149,11 +149,18 @@ public class InventoryDTO {
     @SerializedName("ProductSerialNumber")
     private String ProductSerialNumber;
 
+    @SerializedName("PendingPickQty")
+    private String PendingPickQty;
+
     @SerializedName("IsOutward")
     private int IsOutward;
 
     @SerializedName("IsInward")
     private int IsInward;
+
+    @SerializedName("IsItemScannedForIssue")
+    private int IsItemScannedForIssue;
+
 
     @SerializedName("IsAutoASN")
     private boolean IsAutoASN;
@@ -441,6 +448,13 @@ public class InventoryDTO {
                         this.setStoreRefNo(entry.getValue().toString());
                     }
                     break;
+
+               case "PendingPickQty":
+                    if (entry.getValue() != null) {
+                        this.setPendigPickQty(entry.getValue().toString());
+                    }
+                    break;
+
 
                 case "ProductSerialNumber":
                     if (entry.getValue() != null) {
@@ -946,5 +960,21 @@ public class InventoryDTO {
 
     public void setAutoASN(boolean autoASN) {
         IsAutoASN = autoASN;
+    }
+
+    public String getPendigPickQty() {
+        return PendingPickQty;
+    }
+
+    public void setPendigPickQty(String pendigPickQty) {
+        PendingPickQty = pendigPickQty;
+    }
+
+    public int getIsItemScannedForIssue() {
+        return IsItemScannedForIssue;
+    }
+
+    public void setIsItemScannedForIssue(int isItemScannedForIssue) {
+        IsItemScannedForIssue = isItemScannedForIssue;
     }
 }

@@ -844,6 +844,7 @@ public class DeNestingReceiveFragment extends Fragment implements BarcodeReader.
             inventoryDTO.setReferenceDocumentNumber(jobOrderNo);
             inventoryDTO.setRSN(RSNNumber);
             inventoryDTO.setJobOrderTypeID(Double.parseDouble(jobOrderTypeId));
+            inventoryDTO.setIsItemScannedForIssue(0);
             if (IsuserConfirmedRedo) {
                 inventoryDTO.setUserConfirmReDo(true);
             }

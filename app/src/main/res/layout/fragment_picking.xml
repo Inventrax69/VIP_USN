@@ -226,7 +226,7 @@
                     android:textColor="@color/black"
                     android:textSize="12sp"
                     android:textStyle="bold"
-                    android:text="- 12584/-"/>
+                    />
 
 
             </LinearLayout>

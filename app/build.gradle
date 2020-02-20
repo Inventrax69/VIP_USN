@@ -10,15 +10,27 @@ android {
     defaultConfig {
         applicationId "com.example.karthikm.merlinwmscipher_vip_rdc"
         minSdkVersion 16
-        targetSdkVersion 28
-        versionCode 8
-        versionName "3.6"
+        //targetSdkVersion 28
+        versionCode 11
+        versionName "3.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
+
+    signingConfigs {
+
+        release {
+            storeFile file('vip_jks.jks')
+            storePassword '123456'
+            keyAlias 'vip'
+            keyPassword '123456'
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
