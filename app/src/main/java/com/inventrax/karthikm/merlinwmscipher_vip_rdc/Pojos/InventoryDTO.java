@@ -162,6 +162,12 @@ public class InventoryDTO {
     private int IsItemScannedForIssue;
 
 
+    @SerializedName("IsPackingCompleted")
+    private int IsPackingCompleted;
+
+    @SerializedName("IsPackingInfo")
+    private int IsPackingInfo;
+
     @SerializedName("IsAutoASN")
     private boolean IsAutoASN;
 
@@ -475,6 +481,19 @@ public class InventoryDTO {
                         this.setIsInward((int)Double.parseDouble(entry.getValue().toString()));
                     }
                     break;
+
+                case "IsPackingCompleted":
+                    if (entry.getValue() != null) {
+                        this.setIsPackingCompleted((int)Double.parseDouble(entry.getValue().toString()));
+                    }
+                    break;
+                  case "IsPackingInfo":
+                    if (entry.getValue() != null) {
+                        this.setIsPackingInfo((int)Double.parseDouble(entry.getValue().toString()));
+                    }
+                    break;
+
+
             }
         }
     }
@@ -976,5 +995,21 @@ public class InventoryDTO {
 
     public void setIsItemScannedForIssue(int isItemScannedForIssue) {
         IsItemScannedForIssue = isItemScannedForIssue;
+    }
+
+    public int getIsPackingCompleted() {
+        return IsPackingCompleted;
+    }
+
+    public void setIsPackingCompleted(int isPackingCompleted) {
+        IsPackingCompleted = isPackingCompleted;
+    }
+
+    public int getIsPackingInfo() {
+        return IsPackingInfo;
+    }
+
+    public void setIsPackingInfo(int isPackingInfo) {
+        IsPackingInfo = isPackingInfo;
     }
 }

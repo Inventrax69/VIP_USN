@@ -176,6 +176,9 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
         /*childModel = new MenuModel("Nesting / Denesting", false, false, "Nesting / Denesting");
         childModelsList.add(childModel);*/
 
+        childModel = new MenuModel("Nesting Receive", false, false, "Nesting Receive");
+        childModelsList.add(childModel);
+
         childModel = new MenuModel("Denesting Issue", false, false, "Denesting Issue");
         childModelsList.add(childModel);
 
@@ -324,6 +327,10 @@ public class DrawerFragment extends Fragment implements View.OnClickListener {
 
             case "Denesting Receive":
                 FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new DeNestingReceiveFragment());
+                break;
+
+            case "Nesting Receive":
+                FragmentUtils.replaceFragmentWithBackStack(getActivity(), R.id.container_body, new NestingReceiveFragment());
                 break;
 
             case "Nesting / Denesting":

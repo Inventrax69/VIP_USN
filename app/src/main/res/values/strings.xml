@@ -134,6 +134,7 @@
     <string name="title_activity_rsn_print">RSN Print</string>
     <string name="generatepackSlip">Generate pack Slip</string>
     <string name="nesting_denesting">Nesting/De Nesting</string>
+    <string name="nesting_receive">Nesting Receive</string>
 
     <string name="update">Update</string>
     <string name="fragment_about_txt_version">Version :</string>
@@ -208,4 +209,5 @@
     <string name="scan_packing_slip">Scan Packing slip</string>
     <string name="print">Print</string>
     <string name="submit">Submit</string>
+    <string name="save_carton">Save Carton</string>
 </resources>

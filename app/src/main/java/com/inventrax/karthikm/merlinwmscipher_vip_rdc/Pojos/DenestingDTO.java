@@ -26,6 +26,8 @@ public class DenestingDTO {
     private String Mrp;
     @SerializedName("BatchNumber")
     private String batchNumber;
+    @SerializedName("JobTypeID")
+    private int JobTypeID;
 
 
 
@@ -154,5 +156,13 @@ public class DenestingDTO {
 
     public void setBatchNumber(String batchNumber) {
         this.batchNumber = batchNumber;
+    }
+
+    public int getJobTypeID() {
+        return JobTypeID;
+    }
+
+    public void setJobTypeID(int jobTypeID) {
+        JobTypeID = jobTypeID;
     }
 }

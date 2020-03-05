@@ -133,4 +133,7 @@ public interface ApiInterface {
     Call <String> GetCartonSerialNumberInfo(@Body WMSCoreMessage oRequest);
 
 
+    @POST("DeNesting/UpdateNestingReceiveItem")
+    Call <String> UpdateNestingReceiveItem(@Body WMSCoreMessage oRequest);
+
 }
