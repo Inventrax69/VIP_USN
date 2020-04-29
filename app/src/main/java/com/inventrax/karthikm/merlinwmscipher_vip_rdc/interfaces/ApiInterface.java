@@ -136,4 +136,14 @@ public interface ApiInterface {
     @POST("DeNesting/UpdateNestingReceiveItem")
     Call <String> UpdateNestingReceiveItem(@Body WMSCoreMessage oRequest);
 
+    @POST("DeNesting/DeleteNestingPackingData")
+    Call <String> DeleteNestingPackingData(@Body WMSCoreMessage oRequest);
+
+    @POST("DeNesting/GetNestingCartonData")
+    Call <String> GetNestingCartonData(@Body WMSCoreMessage oRequest);
+
+
+
+
+
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FalconWMS_USN</string>
+    <string name="app_name">VIP_USN</string>
     <!-- Navigation Drawer -->
 
     <string name="drawer_open">Open</string>
@@ -133,7 +133,8 @@
     <string name="title_activity_packing">Packing</string>
     <string name="title_activity_rsn_print">RSN Print</string>
     <string name="generatepackSlip">Generate pack Slip</string>
-    <string name="nesting_denesting">Nesting/De Nesting</string>
+    <string name="nesting_denesting">De/Nesting</string>
+    <string name="denesting_receive">DeNesting Receive</string>
     <string name="nesting_receive">Nesting Receive</string>
 
     <string name="update">Update</string>
@@ -210,4 +211,5 @@
     <string name="print">Print</string>
     <string name="submit">Submit</string>
     <string name="save_carton">Save Carton</string>
+    <string name="delete_carton">Delete Carton</string>
 </resources>

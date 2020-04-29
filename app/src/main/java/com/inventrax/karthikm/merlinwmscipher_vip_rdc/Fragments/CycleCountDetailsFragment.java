@@ -418,7 +418,7 @@ public class CycleCountDetailsFragment extends Fragment implements View.OnClickL
             if (scanValidator.IsLocationScanned(scannedData)) {
 
                 tvScanLocation.setText(scannedData);
-                if(!Location.equals(tvScanLocation.getText()))
+               /* if(!Location.equals(tvScanLocation.getText()))
                 {
                     tvScanLocation.setText("Scan Location");
                     cvScanLocation.setCardBackgroundColor(getResources().getColor(R.color.locationColor));
@@ -426,8 +426,11 @@ public class CycleCountDetailsFragment extends Fragment implements View.OnClickL
                     common.showUserDefinedAlertType(errorMessages.EMC_0049.replace("[Location]",Location),getActivity(),getContext(),"Error");
                     return;
 
-                }
-                if (isStockTake == true) {
+                }*/
+
+               BlockLocationForCycleCount(scannedData);
+
+                /*if (isStockTake == true) {
 
                     cvScanLocation.setCardBackgroundColor(Color.WHITE);
                     ivScanLocation.setImageResource(R.drawable.check);
@@ -439,7 +442,7 @@ public class CycleCountDetailsFragment extends Fragment implements View.OnClickL
                     ivScanLocation.setImageResource(R.drawable.check);
 
                 }
-
+*/
 
             } else if (ScanValidator.IsItemScanned(scannedData)) {
                 if(tvScanLocation.getText().toString().equals("Scan Location"))
@@ -475,6 +478,148 @@ public class CycleCountDetailsFragment extends Fragment implements View.OnClickL
 
                 }
             }
+        }
+    }
+
+
+
+    public void BlockLocationForCycleCount(final String loc) {
+        try {
+
+            WMSCoreMessage message = new WMSCoreMessage();
+            message= common.SetAuthentication(EndpointConstants.CycleCount,getActivity());
+            CycleCountDTO cycleCountDTO= new CycleCountDTO();
+            cycleCountDTO.setUserId(userId);
+            cycleCountDTO.setSelectedCCName(lblCycleCount.getText().toString());
+            cycleCountDTO.setLocation(loc);
+            message.setEntityObject(cycleCountDTO);
+
+
+            Call<String> call = null;
+            ApiInterface apiService =
+                    RestService.getClient().create(ApiInterface.class);
+
+            try {
+                //Checking for Internet Connectivity
+                // if (NetworkUtils.isInternetAvailable()) {
+                // Calling the Interface method
+                ProgressDialogUtils.showProgressDialog("Please Wait");
+                call = apiService.BlockLocationForCycleCount(message);
+                // } else {
+                // DialogUtils.showAlertDialog(getActivity(), "Please enable internet");
+                // return;
+                // }
+
+            } catch (Exception ex) {
+                try {
+                    exceptionLoggerUtils.createExceptionLog(ex.toString(),classCode,"BlockLocationForCycleCount_01",getActivity());
+                    logException();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ProgressDialogUtils.closeProgressDialog();
+                common.showUserDefinedAlertType(errorMessages.EMC_0002,getActivity(),getContext(),"Error");
+            }
+            try {
+                //Getting response from the method
+                call.enqueue(new Callback<String>() {
+
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+
+                        try {
+
+                            core = gson.fromJson(response.body().toString(), WMSCoreMessage.class);
+                            if(core!=null) {
+                                if ((core.getType().toString().equals("Exception"))) {
+                                    List<LinkedTreeMap<?, ?>> _lExceptions = new ArrayList<LinkedTreeMap<?, ?>>();
+                                    _lExceptions = (List<LinkedTreeMap<?, ?>>) core.getEntityObject();
+
+                                    WMSExceptionMessage owmsExceptionMessage = null;
+                                    for (int i = 0; i < _lExceptions.size(); i++) {
+                                        owmsExceptionMessage = new WMSExceptionMessage(_lExceptions.get(i).entrySet());
+
+                                        if (owmsExceptionMessage.isShowUserConfirmDialogue()) {
+                                            DialogUtils.showConfirmDialog(getActivity(), "Confirm", owmsExceptionMessage.getWMSMessage().toString(), new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    switch (which) {
+                                                        case DialogInterface.BUTTON_POSITIVE:
+
+                                                            break;
+                                                        case DialogInterface.BUTTON_NEGATIVE:
+
+                                                            break;
+                                                    }
+                                                }
+                                            });
+
+                                            return;
+                                        }
+                                        ProgressDialogUtils.closeProgressDialog();
+                                        common.showAlertType(owmsExceptionMessage, getActivity(), getContext());
+                                        cvScanLocation.setCardBackgroundColor(getResources().getColor(R.color.white));
+                                        ivScanLocation.setImageResource(R.drawable.warning_img);
+                                        tvScanLocation.setText("Scan Location");
+                                    }
+                                } else {
+                                    List<LinkedTreeMap<?, ?>> _lLocation = new ArrayList<LinkedTreeMap<?, ?>>();
+                                    _lLocation = (List<LinkedTreeMap<?, ?>>) core.getEntityObject();
+                                    CycleCountDTO _oCycleCountDTO = null;
+
+
+                                    for (int i = 0; i < _lLocation.size(); i++) {
+
+                                        _oCycleCountDTO = new CycleCountDTO(_lLocation.get(i).entrySet());
+
+                                    }
+
+                                    ProgressDialogUtils.closeProgressDialog();
+
+                                    cvScanLocation.setCardBackgroundColor(Color.WHITE);
+                                    ivScanLocation.setImageResource(R.drawable.check);
+
+                                    location = loc;
+
+                                }
+                            }
+                        } catch (Exception ex) {
+                            try {
+                                exceptionLoggerUtils.createExceptionLog(ex.toString(),classCode,"BlockLocationForCycleCount_02",getActivity());
+                                logException();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            ProgressDialogUtils.closeProgressDialog();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<String> call, Throwable throwable) {
+                        //Toast.makeText(LoginActivity.this, throwable.toString(), Toast.LENGTH_LONG).show();
+                        ProgressDialogUtils.closeProgressDialog();
+                        common.showUserDefinedAlertType(errorMessages.EMC_0001,getActivity(),getContext(),"Error");
+                    }
+                });
+            } catch (Exception ex) {
+                try {
+                    exceptionLoggerUtils.createExceptionLog(ex.toString(),classCode,"BlockLocationForCycleCount_03",getActivity());
+                    logException();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ProgressDialogUtils.closeProgressDialog();
+                common.showUserDefinedAlertType(errorMessages.EMC_0001,getActivity(),getContext(),"Error");
+            }
+        }catch (Exception ex)
+        {
+            try {
+                exceptionLoggerUtils.createExceptionLog(ex.toString(),classCode,"BlockLocationForCycleCount_04",getActivity());
+                logException();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ProgressDialogUtils.closeProgressDialog();
+            common.showUserDefinedAlertType(errorMessages.EMC_0003,getActivity(),getContext(),"Error");
         }
     }
 
@@ -896,7 +1041,7 @@ public class CycleCountDetailsFragment extends Fragment implements View.OnClickL
                                         cvScanSKU.setCardBackgroundColor(getResources().getColor(R.color.skuColor));
                                         ivScanSKU.setImageResource(R.drawable.fullscreen_img);
 
-                                        backToHeaderFragment();
+                                        //backToHeaderFragment();
 
 
                                         ProgressDialogUtils.closeProgressDialog();

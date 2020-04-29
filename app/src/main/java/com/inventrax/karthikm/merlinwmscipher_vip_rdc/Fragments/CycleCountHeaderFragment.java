@@ -249,7 +249,7 @@ public class CycleCountHeaderFragment extends Fragment implements View.OnClickLi
                         GetCCdetails();
                         return;
                     } else {
-                        rlCCHeaderOne.setVisibility(View.GONE);
+                       /* rlCCHeaderOne.setVisibility(View.GONE);
                         rlCCHeaderTwo.setVisibility(View.VISIBLE);
                         lblCycleCount.setText(CCname);
 
@@ -257,7 +257,9 @@ public class CycleCountHeaderFragment extends Fragment implements View.OnClickLi
                         ivScanLocation.setImageResource(R.drawable.fullscreen_img);
 
                         etLocation.setText("");
-                        etBoxQty.setText("");
+                        etBoxQty.setText("");*/
+
+                        GetCCdetails();
                     }
                 }
                 else

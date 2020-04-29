@@ -375,6 +375,7 @@ public class DeNestingReceiveFragment extends Fragment implements BarcodeReader.
             WMSCoreMessage message = new WMSCoreMessage();
             message = common.SetAuthentication(EndpointConstants.DenestingDTO, getActivity());
             DenestingDTO denestingDTO = new DenestingDTO();
+            denestingDTO.setJobTypeID(2);
             message.setEntityObject(denestingDTO);
 
             Call<String> call = null;
@@ -1341,7 +1342,7 @@ public class DeNestingReceiveFragment extends Fragment implements BarcodeReader.
                 // Toast.makeText(this, "Scanner unavailable", Toast.LENGTH_SHORT).show();
             }
         }
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.nesting_denesting));
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.denesting_receive));
     }
 
 
