@@ -7,6 +7,7 @@ android {
     lintOptions {
         abortOnError false
     }
+
     defaultConfig {
         applicationId "com.example.karthikm.merlinwmscipher_vip_rdc"
         minSdkVersion 16
@@ -19,7 +20,6 @@ android {
     }
 
     signingConfigs {
-
         release {
             storeFile file('vip_jks.jks')
             storePassword '123456'
@@ -50,6 +50,7 @@ android {
 repositories {
     maven { url "https://jitpack.io" }
 }
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {

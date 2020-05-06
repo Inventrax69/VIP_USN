@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VIP_USN</string>
+    <string name="app_name">FalconWMS_USN</string>
     <!-- Navigation Drawer -->
 
     <string name="drawer_open">Open</string>
