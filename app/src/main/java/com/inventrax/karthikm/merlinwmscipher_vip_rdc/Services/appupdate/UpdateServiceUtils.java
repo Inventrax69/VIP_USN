@@ -151,8 +151,17 @@ public class UpdateServiceUtils {
         }
 
         IntentFilter intentFilter;
+        int version=0;
         private void updateTheApplication(Context ctx, String apkPath) {
 
+            try {
+                PackageManager manager = context.getPackageManager();
+                PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+                version = info.versionCode;
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            final String apkName = "vip"+version+".apk";
             long enqueue;
             DownloadManager dm = null;
             BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -163,7 +172,7 @@ public class UpdateServiceUtils {
 
                         try {
                             final PackageManager pm = context.getPackageManager();
-                            String apkName = "vip.apk";
+
                             String fullPath = Environment.getExternalStorageDirectory().getPath() + "/VIP/" + apkName;
                             PackageInfo info = pm.getPackageArchiveInfo(fullPath, 0);
                             int versionNumber = info.versionCode;
@@ -172,7 +181,7 @@ public class UpdateServiceUtils {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 
                                 Uri contentUri = FileProvider.getUriForFile(context, "com.inventrax.karthikm.merlinwmscipher_vip_rdc.fileprovider" ,
-                                        new File(Environment.getExternalStorageDirectory().getPath() + "/VIP/vip.apk"));
+                                        new File(Environment.getExternalStorageDirectory().getPath() + "/VIP/"+apkName));
                                 Intent openFileIntent = new Intent(Intent.ACTION_INSTALL_PACKAGE);
                                 openFileIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                                 openFileIntent.setData(contentUri);
@@ -180,7 +189,7 @@ public class UpdateServiceUtils {
 
                             } else {
                                 Intent intent1 = new Intent(Intent.ACTION_VIEW);
-                                intent1.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath() + "/VIP/vip.apk")),
+                                intent1.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath() + "/VIP/"+apkName)),
                                         "application/vnd.android.package-archive");
                                 intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // without this flag android returned a intent error!
                                 context.startActivity(intent1);
@@ -200,7 +209,6 @@ public class UpdateServiceUtils {
                 dm = (DownloadManager) ctx.getSystemService(Context.DOWNLOAD_SERVICE);
             }
 
-            String apkName = "vip.apk";
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(apkPath));
             request.setTitle(ctx.getString(R.string.app_name));
             //request.setDescription(ctx.getString(R.string.dont_cancel));
